@@ -1,6 +1,8 @@
 package internal
 
 import (
+	"math/rand/v2"
+
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
@@ -28,11 +30,15 @@ func (chunk *Chunk) Generate() {
 
 			center := rl.NewVector2(0, 0)
 			this := rl.NewVector2(float32(chunk.X*16*16+x*16+8), float32(chunk.Y*16*16+y*16+8))
-			
+
 			if rl.Vector2Distance(center, this) < 7*16 {
 				t = TileTypeDirtFloor
 			} else {
-				t = TileTypeSnowFloor
+				if rand.IntN(100)+1 < 2 {
+					t = TileTypeSnowBrush
+				} else {
+					t = TileTypeSnowFloor
+				}
 			}
 
 			chunk.Tiles[y] = append(chunk.Tiles[y], &Tile{

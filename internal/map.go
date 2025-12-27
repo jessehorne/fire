@@ -40,7 +40,7 @@ func (m *Map) Update() {
 func (m *Map) Draw() {
 	// draw chunks
 	for y := m.StartChunkY; y < m.StartChunkY+4; y++ {
-		for x := m.StartChunkX; x < m.StartChunkX+4; x++ {
+		for x := m.StartChunkX; x < m.StartChunkX+6; x++ {
 			m.DrawChunk(m.Tilesets["main"], x, y)
 		}
 	}

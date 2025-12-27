@@ -15,7 +15,7 @@ func NewTile(t uint8) *Tile {
 }
 
 func (t *Tile) Draw(tileset *Tileset, x, y int) {
-	tx := -1
+	tx := -0
 	ty := -1
 	switch t.Type {
 	case TileTypeSnowFloor:
@@ -26,7 +26,10 @@ func (t *Tile) Draw(tileset *Tileset, x, y int) {
 		ty = 3
 	case TileTypeSnowBrush:
 		tx = 18
-		ty = 0
+		ty = 2
+	}
+	if t.Type == TileTypeSnowBrush {
+		tileset.DrawTile(0, 0, float32(x), float32(y))
 	}
 	tileset.DrawTile(tx, ty, float32(x), float32(y))
 }
