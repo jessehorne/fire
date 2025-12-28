@@ -19,10 +19,10 @@ func NewMap() *Map {
 }
 
 func (m *Map) LoadTilesets() {
-	m.Tilesets["main"] = NewTileset("./assets/TilesA2.png", 16, 16)
+	m.Tilesets["main"] = NewTileset("./assets/final/tileset.png", 16, 16)
 }
 
-func (m *Map) GenerateChunk(x, y int) {
+func (m *Map) GenerateChunk(x, y int, p *Player) {
 	_, yOK := m.Chunks[y]
 	if !yOK {
 		m.Chunks[y] = make(map[int]*Chunk)
@@ -30,7 +30,7 @@ func (m *Map) GenerateChunk(x, y int) {
 
 	_, xOK := m.Chunks[y][x]
 	if !xOK {
-		m.Chunks[y][x] = NewChunk(x, y)
+		m.Chunks[y][x] = NewChunk(x, y, p)
 	}
 }
 
@@ -54,7 +54,7 @@ func (m *Map) DrawChunk(p *Player, tileset *Tileset, x, y int) {
 	}
 	_, xOK := m.Chunks[y][x]
 	if !xOK {
-		m.Chunks[y][x] = NewChunk(x, y)
+		m.Chunks[y][x] = NewChunk(x, y, p)
 	}
 	m.Chunks[y][x].Draw(p, tileset)
 	m.TreesToDraw = append(m.TreesToDraw, m.Chunks[y][x].TreesToDraw...)

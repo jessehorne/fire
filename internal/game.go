@@ -35,6 +35,19 @@ func (g *Game) Update() {
 	g.Player.Update()
 	g.Fire.Update()
 
+	// handle putting twigs on fire
+	if g.Player.TwigCount > 0 {
+		pv := rl.NewVector2(g.Player.X, g.Player.Y)
+		fv := rl.NewVector2(0, 0)
+		if rl.Vector2Distance(pv, fv) < 32 {
+			g.Fire.Stage += g.Player.TwigCount
+			if g.Fire.Stage > 3 {
+				g.Fire.Stage = 3
+			}
+			g.Player.TwigCount = 0
+		}
+	}
+
 	// update camera
 	g.Camera.Target = rl.NewVector2(g.Player.X+8, g.Player.Y+8)
 
