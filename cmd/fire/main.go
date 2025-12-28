@@ -6,7 +6,7 @@ import (
 )
 
 func main() {
-	rl.InitWindow(800, 450, "Fire | A game by Quite Frankly and jessefromgeorgia")
+	rl.InitWindow(800, 450, "Fire | A game by Claragraal, Quite Frankly and jessefromgeorgia")
 	defer rl.CloseWindow()
 
 	rl.SetTargetFPS(60)
@@ -17,7 +17,7 @@ func main() {
 
 		rl.BeginDrawing()
 		rl.ClearBackground(rl.Black)
-		
+
 		g.Update()
 		g.Draw()
 

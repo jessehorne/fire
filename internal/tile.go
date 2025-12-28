@@ -4,6 +4,9 @@ const (
 	TileTypeSnowFloor uint8 = iota
 	TileTypeDirtFloor
 	TileTypeSnowBrush
+	TileTypeTreeBig
+	TileTypeTreeSmall
+	TileTypeTwig1
 )
 
 type Tile struct {
@@ -15,8 +18,8 @@ func NewTile(t uint8) *Tile {
 }
 
 func (t *Tile) Draw(tileset *Tileset, x, y int) {
-	tx := -0
-	ty := -1
+	tx := 0
+	ty := 0
 	switch t.Type {
 	case TileTypeSnowFloor:
 		tx = 0
@@ -28,8 +31,7 @@ func (t *Tile) Draw(tileset *Tileset, x, y int) {
 		tx = 18
 		ty = 2
 	}
-	if t.Type == TileTypeSnowBrush {
-		tileset.DrawTile(0, 0, float32(x), float32(y))
-	}
+
+	tileset.DrawTile(0, 0, float32(x), float32(y))
 	tileset.DrawTile(tx, ty, float32(x), float32(y))
 }

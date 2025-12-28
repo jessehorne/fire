@@ -5,10 +5,11 @@ import (
 )
 
 type Game struct {
-	Map    *Map
-	Player *Player
-	Fire   *Fire
-	Camera rl.Camera2D
+	Map        *Map
+	Player     *Player
+	Fire       *Fire
+	Camera     rl.Camera2D
+	TreeSource rl.Texture2D
 }
 
 func NewGame() *Game {
@@ -25,6 +26,7 @@ func NewGame() *Game {
 			Rotation: 0.0,
 			Zoom:     2.0,
 		},
+		TreeSource: rl.LoadTexture("./assets/TilesB.png"),
 	}
 }
 
@@ -61,6 +63,21 @@ func (g *Game) Draw() {
 	rl.BeginMode2D(g.Camera)
 	g.Map.Draw()
 	g.Fire.Draw()
+
+	// draw bottoms of trees
+	for _, t := range g.Map.TreesToDraw {
+		t.DrawBottom(g.TreeSource)
+	}
+
+	// draw player
 	g.Player.Draw()
+
+	// draw tops of trees
+	for _, t := range g.Map.TreesToDraw {
+		t.DrawTop(g.TreeSource)
+	}
+
+	g.Map.TreesToDraw = nil
+
 	rl.EndMode2D()
 }

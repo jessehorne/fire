@@ -7,16 +7,18 @@ import (
 )
 
 type Chunk struct {
-	X     int
-	Y     int
-	Tiles [][]*Tile
+	X           int
+	Y           int
+	Tiles       [][]*Tile
+	TreesToDraw []*Tree // trees to draw this frame
 }
 
 func NewChunk(x, y int) *Chunk {
 	c := &Chunk{
-		X:     x,
-		Y:     y,
-		Tiles: [][]*Tile{},
+		X:           x,
+		Y:           y,
+		Tiles:       [][]*Tile{},
+		TreesToDraw: []*Tree{},
 	}
 	c.Generate()
 	return c
@@ -34,8 +36,19 @@ func (chunk *Chunk) Generate() {
 			if rl.Vector2Distance(center, this) < 7*16 {
 				t = TileTypeDirtFloor
 			} else {
-				if rand.IntN(100)+1 < 2 {
+				r := rand.IntN(100) + 1
+				if r < 2 {
 					t = TileTypeSnowBrush
+				} else if r >= 3 && r < 6 {
+					if rl.Vector2Distance(center, this) > 20*16 {
+						t = TileTypeTreeBig
+					}
+				} else if r >= 7 && r < 10 {
+					if rl.Vector2Distance(center, this) > 20*16 {
+						t = TileTypeTreeSmall
+					}
+				} else if r == 10 {
+					t = TileTypeTwig1
 				} else {
 					t = TileTypeSnowFloor
 				}
@@ -49,11 +62,16 @@ func (chunk *Chunk) Generate() {
 }
 
 func (chunk *Chunk) Draw(tileset *Tileset) {
+	chunk.TreesToDraw = make([]*Tree, 0)
 	offsetX := chunk.X * 16 * 16
 	offsetY := chunk.Y * 16 * 16
 	for ty := 0; ty < 16; ty++ {
 		for tx := 0; tx < 16; tx++ {
-			chunk.Tiles[ty][tx].Draw(tileset, offsetX+tx*16, offsetY+ty*16)
+			t := chunk.Tiles[ty][tx]
+			if t.Type == TileTypeTreeBig || t.Type == TileTypeTreeSmall {
+				chunk.TreesToDraw = append(chunk.TreesToDraw, NewTree(offsetX+tx*16, offsetY+ty*16))
+			}
+			t.Draw(tileset, offsetX+tx*16, offsetY+ty*16)
 		}
 	}
 }

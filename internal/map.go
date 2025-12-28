@@ -6,6 +6,7 @@ type Map struct {
 	Chunks        map[int]map[int]*Chunk
 	StartChunkX   int
 	StartChunkY   int
+	TreesToDraw   []*Tree
 }
 
 func NewMap() *Map {
@@ -56,4 +57,5 @@ func (m *Map) DrawChunk(tileset *Tileset, x, y int) {
 		m.Chunks[y][x] = NewChunk(x, y)
 	}
 	m.Chunks[y][x].Draw(tileset)
+	m.TreesToDraw = append(m.TreesToDraw, m.Chunks[y][x].TreesToDraw...)
 }

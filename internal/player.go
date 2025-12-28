@@ -26,7 +26,7 @@ func NewPlayer() *Player {
 	return &Player{
 		X:          8 * 16,
 		Y:          8 * 16,
-		Speed:      100,
+		Speed:      60,
 		Frame:      0,
 		FrameSpeed: 4,
 		Direction:  PlayerDirectionDown,
