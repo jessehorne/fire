@@ -23,8 +23,8 @@ func NewTree(x, y int) *Tree {
 }
 
 func (t *Tree) DrawBottom(source rl.Texture2D) {
-	s := rl.NewRectangle(0, 5*16, 6*16, 4*16)
-	d := rl.NewRectangle(float32(t.X), float32(t.Y+5*16), 6*16, 4*16)
+	s := rl.NewRectangle(0, 7*16, 6*16, 2*16)
+	d := rl.NewRectangle(float32(t.X), float32(t.Y+7*16), 6*16, 2*16)
 
 	col := rl.White
 	if t.PlayerBehind {
@@ -34,8 +34,8 @@ func (t *Tree) DrawBottom(source rl.Texture2D) {
 }
 
 func (t *Tree) DrawTop(source rl.Texture2D) {
-	s := rl.NewRectangle(0, 0, 6*16, 6*16)
-	d := rl.NewRectangle(float32(t.X), float32(t.Y), 6*16, 6*16)
+	s := rl.NewRectangle(0, 0, 6*16, 7*16)
+	d := rl.NewRectangle(float32(t.X), float32(t.Y), 6*16, 7*16)
 	col := rl.White
 	if t.PlayerBehind {
 		col = rl.Fade(rl.White, 0.1)

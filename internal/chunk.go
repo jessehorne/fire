@@ -39,11 +39,11 @@ func (chunk *Chunk) Generate() {
 				r := rand.IntN(100) + 1
 				if r < 2 {
 					t = TileTypeSnowBrush
-				} else if r >= 3 && r < 6 {
+				} else if r >= 3 && r < 4 {
 					if rl.Vector2Distance(center, this) > 20*16 {
 						t = TileTypeTreeBig
 					}
-				} else if r >= 7 && r < 10 {
+				} else if r >= 4 && r < 6 {
 					if rl.Vector2Distance(center, this) > 20*16 {
 						t = TileTypeTreeSmall
 					}
@@ -61,7 +61,7 @@ func (chunk *Chunk) Generate() {
 	}
 }
 
-func (chunk *Chunk) Draw(tileset *Tileset) {
+func (chunk *Chunk) Draw(p *Player, tileset *Tileset) {
 	chunk.TreesToDraw = make([]*Tree, 0)
 	offsetX := chunk.X * 16 * 16
 	offsetY := chunk.Y * 16 * 16
@@ -72,6 +72,12 @@ func (chunk *Chunk) Draw(tileset *Tileset) {
 				chunk.TreesToDraw = append(chunk.TreesToDraw, NewTree(offsetX+tx*16, offsetY+ty*16))
 			}
 			t.Draw(tileset, offsetX+tx*16, offsetY+ty*16)
+
+			// player collision
+			dist := rl.Vector2Distance(rl.NewVector2(p.X+8, p.Y+16+8), rl.NewVector2(float32(offsetX+tx*16+8), float32(offsetY+ty*16+8)))
+			if dist < 8 {
+				t.PlayerSteppedOn = true
+			}
 		}
 	}
 }

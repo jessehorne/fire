@@ -34,6 +34,10 @@ func NewPlayer() *Player {
 	}
 }
 
+func (p *Player) Rectangle() rl.Rectangle {
+	return rl.NewRectangle(p.X, p.Y, 16, 32)
+}
+
 func (p *Player) Update() {
 	// movement
 	dir := PlayerDirectionDown

@@ -59,15 +59,39 @@ func (g *Game) Update() {
 	g.Map.StartChunkY = int(g.Player.Y/16/16) - 2
 }
 
+func (g *Game) HandlePlayerCollisions() {
+	// with trees
+	ppos := rl.NewVector2(g.Player.X+8, g.Player.Y+16)
+	//rl.DrawCircle(int32(ppos.X), int32(ppos.Y), 8, rl.Red)
+	for _, t := range g.Map.TreesToDraw {
+		tpos := rl.NewVector2(float32(t.X+3*16), float32(t.Y+7*16))
+		//rl.DrawCircle(int32(tpos.X), int32(tpos.Y), 8, rl.Blue)
+		dist := rl.Vector2Distance(ppos, tpos)
+		if dist < 16 {
+			if dist == 0 {
+				dist = 0.1
+			}
+			normal := rl.Vector2Normalize(rl.Vector2Subtract(ppos, tpos))
+			overlap := 16 - dist
+			pushback := rl.Vector2Scale(normal, overlap)
+			g.Player.X += pushback.X
+			g.Player.Y += pushback.Y
+			ppos = rl.Vector2Add(ppos, pushback)
+		}
+	}
+}
+
 func (g *Game) Draw() {
 	rl.BeginMode2D(g.Camera)
-	g.Map.Draw()
+	g.Map.Draw(g.Player)
 	g.Fire.Draw()
+
+	g.HandlePlayerCollisions()
 
 	// draw bottoms of trees
 	for _, t := range g.Map.TreesToDraw {
 		// check if player behind trees
-		pbox := rl.NewRectangle(g.Player.X, g.Player.Y, 16, 32)
+		pbox := g.Player.Rectangle()
 		tbox := rl.NewRectangle(float32(t.X), float32(t.Y), 96, 144-64)
 		//rl.DrawRectanglePro(tbox, rl.NewVector2(0, 0), 0.0, rl.Red)
 		//rl.DrawRectanglePro(pbox, rl.NewVector2(0, 0), 0.0, rl.Blue)

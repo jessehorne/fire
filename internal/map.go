@@ -38,16 +38,16 @@ func (m *Map) Update() {
 
 }
 
-func (m *Map) Draw() {
+func (m *Map) Draw(p *Player) {
 	// draw chunks
 	for y := m.StartChunkY; y < m.StartChunkY+4; y++ {
 		for x := m.StartChunkX; x < m.StartChunkX+6; x++ {
-			m.DrawChunk(m.Tilesets["main"], x, y)
+			m.DrawChunk(p, m.Tilesets["main"], x, y)
 		}
 	}
 }
 
-func (m *Map) DrawChunk(tileset *Tileset, x, y int) {
+func (m *Map) DrawChunk(p *Player, tileset *Tileset, x, y int) {
 	_, yOK := m.Chunks[y]
 	if !yOK {
 		m.Chunks[y] = make(map[int]*Chunk)
@@ -56,6 +56,6 @@ func (m *Map) DrawChunk(tileset *Tileset, x, y int) {
 	if !xOK {
 		m.Chunks[y][x] = NewChunk(x, y)
 	}
-	m.Chunks[y][x].Draw(tileset)
+	m.Chunks[y][x].Draw(p, tileset)
 	m.TreesToDraw = append(m.TreesToDraw, m.Chunks[y][x].TreesToDraw...)
 }
