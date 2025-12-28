@@ -66,6 +66,14 @@ func (g *Game) Draw() {
 
 	// draw bottoms of trees
 	for _, t := range g.Map.TreesToDraw {
+		// check if player behind trees
+		pbox := rl.NewRectangle(g.Player.X, g.Player.Y, 16, 32)
+		tbox := rl.NewRectangle(float32(t.X), float32(t.Y), 96, 144-64)
+		//rl.DrawRectanglePro(tbox, rl.NewVector2(0, 0), 0.0, rl.Red)
+		//rl.DrawRectanglePro(pbox, rl.NewVector2(0, 0), 0.0, rl.Blue)
+		if rl.CheckCollisionRecs(tbox, pbox) {
+			t.PlayerBehind = true
+		}
 		t.DrawBottom(g.TreeSource)
 	}
 
@@ -75,6 +83,7 @@ func (g *Game) Draw() {
 	// draw tops of trees
 	for _, t := range g.Map.TreesToDraw {
 		t.DrawTop(g.TreeSource)
+		t.PlayerBehind = false
 	}
 
 	g.Map.TreesToDraw = nil
